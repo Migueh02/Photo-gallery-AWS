@@ -22,8 +22,8 @@ Este proyecto es una galería de fotos simple construida con Node.js, desplegada
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/photo-gallery.git
-cd photo-gallery
+git clone https://github.com/Migueh02/Photo-gallery-AWS.git
+cd Photo-gallery
 ```
 
 ### 2. Instala las dependencias
