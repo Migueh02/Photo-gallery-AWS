@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<style>
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
+
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2em;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Botón de cambio de tema */
+.theme-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Formulario de subida */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#fileInput {
+    display: none;
+}
+
+#fileLabel {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#fileLabel:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
+}
+
+/* Animación de carga */
+#photos.loading {
+    position: relative;
+}
+
+#photos.loading::before {
+    content: "Cargando...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+
+/* Galería de fotos */
+#photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 400px;
+    width: 100%;
+    padding: 10px;
+    position: relative;
+}
+
+#photos img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    #photos {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+}
+
+
+</style>
+
+<body>
+    <h1>Photo Gallery</h1>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="photo" accept="image/*" required>
+        <label for="fileInput" id="fileLabel">Choose a photo</label>
+        <button type="submit">Upload Photo</button>
+    </form>
+    <h2>Uploaded Photos</h2>
+    <div id="photos"></div>
+
+    <script>
+        async function fetchPhotos() {
+            const response = await fetch('/photos');
+            const photos = await response.json();
+            const photosDiv = document.getElementById('photos');
+            photosDiv.innerHTML = '';
+            photos.forEach(photo => {
+                const img = document.createElement('img');
+                img.src = photo;
+                img.alt = 'Uploaded Photo';
+                img.classList.add('fade-in');
+                photosDiv.appendChild(img);
+            });
+        }
+
+        window.onload = fetchPhotos;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const toggleButton = document.createElement("button");
+            toggleButton.innerText = "Toggle Theme";
+            toggleButton.classList.add("theme-toggle");
+            document.body.appendChild(toggleButton);
+
+            toggleButton.addEventListener("click", () => {
+                document.body.classList.toggle("dark-theme");
+            });
+
+            const fileInput = document.getElementById('fileInput');
+            const fileLabel = document.getElementById('fileLabel');
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    fileLabel.textContent = fileInput.files[0].name;
+                } else {
+                    fileLabel.textContent = 'Choose a photo';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
