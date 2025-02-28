@@ -49,17 +49,37 @@ PORT=3000
 ### 4. Configura AWS S3
 
 1. Crea un bucket en S3.
-2. Configura las políticas de CORS del bucket:
-   ```xml
-   <CORSConfiguration>
-     <CORSRule>
-       <AllowedOrigin>*</AllowedOrigin>
-       <AllowedMethod>GET</AllowedMethod>
-       <AllowedMethod>POST</AllowedMethod>
-       <AllowedHeader>*</AllowedHeader>
-     </CORSRule>
-   </CORSConfiguration>
-   ```
+2. Confugura las politicas de del bucket:
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Effect": "Allow",
+               "Principal": "*",
+               "Action": "s3:GetObject",
+               "Resource": "arn:aws:s3:::photo-gallery-folder/*"
+           }
+       ]
+   }
+    
+3. Configura las políticas de CORS del bucket:
+   ```json
+   [
+       {
+           "AllowedHeaders": [
+               "*"
+           ],
+           "AllowedMethods": [
+               "GET",
+               "POST"
+           ],
+           "AllowedOrigins": [
+               "*"
+           ],
+           "ExposeHeaders": []
+       }
+   ]
 
 ### 5. Ejecuta la aplicación en desarrollo
 
