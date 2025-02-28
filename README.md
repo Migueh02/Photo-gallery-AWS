@@ -1,5 +1,3 @@
-Aquí tienes una plantilla de documentación para tu proyecto de galería de fotos con Node.js, AWS EC2 y S3. Puedes copiar y pegar esto en un archivo `README.md` en tu repositorio de GitHub.
-
 ---
 
 # Galería de Fotos con Node.js, AWS EC2 y S3
@@ -202,8 +200,3 @@ pm2 restart app
 
 ---
 
-¡Gracias por usar este proyecto! Si tienes alguna pregunta, no dudes en abrir un issue en GitHub. 😊
-
----
-
-Puedes personalizar esta documentación según tus necesidades. ¡Espero que te sea útil! 🚀
