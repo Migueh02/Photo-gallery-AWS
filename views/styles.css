@@ -1,0 +1,220 @@
+/* Variables globales */
+:root {
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --nav-bg: #007bff;
+    --nav-text: #ffffff;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+}
+
+/* Tema oscuro */
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --nav-bg: #1a1a1a;
+    --border-color: #2d2d2d;
+    --shadow-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.navbar a {
+    color: var(--nav-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-weight: 500;
+}
+
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Contenido principal */
+.main-content {
+    margin-top: 80px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Formulario de usuarios */
+.user-form {
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    box-shadow: 0 0 15px var(--shadow-color);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-form h2 {
+    margin-top: 0;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.user-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-form input {
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.user-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.user-form button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.user-form button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Tabla de usuarios */
+.users-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 15px var(--shadow-color);
+    margin-top: 2rem;
+}
+
+.users-table th,
+.users-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.users-table th {
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.users-table tr:last-child td {
+    border-bottom: none;
+}
+
+.users-table tbody tr {
+    transition: background-color 0.3s;
+}
+
+.users-table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Botón de tema */
+.theme-toggle {
+    background-color: transparent;
+    border: 2px solid var(--nav-text);
+    color: var(--nav-text);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--nav-text);
+    color: var(--nav-bg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1rem;
+    }
+
+    .user-form {
+        padding: 1.5rem;
+    }
+
+    .users-table th,
+    .users-table td {
+        padding: 0.8rem;
+    }
+
+    .users-table {
+        font-size: 0.9rem;
+    }
+
+    .navbar {
+        padding: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .users-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .user-form {
+        padding: 1rem;
+    }
+} 

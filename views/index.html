@@ -28,11 +28,14 @@ body {
 :root {
     --bg-color: #ffffff;
     --text-color: #000000;
+    --nav-bg: #007bff;
+    --nav-text: #ffffff;
 }
 
 .dark-theme {
     --bg-color: #121212;
     --text-color: #ffffff;
+    --nav-bg: #1a1a1a;
 }
 
 h1 {
@@ -155,18 +158,108 @@ button:hover {
     }
 }
 
+/* Navbar */
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar a {
+    color: var(--nav-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Contenido principal */
+.main-content {
+    margin-top: 80px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tabla de usuarios */
+.users-table {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: var(--bg-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.users-table th,
+.users-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.users-table th {
+    background-color: var(--nav-bg);
+    color: var(--nav-text);
+}
+
+.users-table tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Formulario de usuarios */
+.user-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--bg-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.user-form input {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
 
 </style>
 
 <body>
-    <h1>Photo Gallery</h1>
-    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" id="fileInput" name="photo" accept="image/*" required>
-        <label for="fileInput" id="fileLabel">Choose a photo</label>
-        <button type="submit">Upload Photo</button>
-    </form>
-    <h2>Uploaded Photos</h2>
-    <div id="photos"></div>
+    <nav class="navbar">
+        <div>
+            <a href="/">Galería</a>
+            <a href="/users.html">Usuarios</a>
+        </div>
+        <button class="theme-toggle">Cambiar Tema</button>
+    </nav>
+
+    <div class="main-content">
+        <h1>Photo Gallery</h1>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" id="fileInput" name="photo" accept="image/*" required>
+            <label for="fileInput" id="fileLabel">Elegir foto</label>
+            <button type="submit">Subir Foto</button>
+        </form>
+        <h2>Fotos Subidas</h2>
+        <div id="photos"></div>
+    </div>
 
     <script>
         async function fetchPhotos() {
@@ -186,11 +279,8 @@ button:hover {
         window.onload = fetchPhotos;
 
         document.addEventListener("DOMContentLoaded", () => {
-            const toggleButton = document.createElement("button");
-            toggleButton.innerText = "Toggle Theme";
-            toggleButton.classList.add("theme-toggle");
-            document.body.appendChild(toggleButton);
-
+            const toggleButton = document.querySelector(".theme-toggle");
+            
             toggleButton.addEventListener("click", () => {
                 document.body.classList.toggle("dark-theme");
             });
@@ -202,7 +292,7 @@ button:hover {
                 if (fileInput.files.length > 0) {
                     fileLabel.textContent = fileInput.files[0].name;
                 } else {
-                    fileLabel.textContent = 'Choose a photo';
+                    fileLabel.textContent = 'Elegir foto';
                 }
             });
         });

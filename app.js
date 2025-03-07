@@ -1,23 +1,33 @@
 require('dotenv').config();
-const https = require('https');
-const fs = require('fs');
 const express = require('express');
 const AWS = require('aws-sdk');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
+const sequelize = require('./config/database');
+const userRoutes = require('./routes/users');
 
 const app = express();
+
+// Middleware para parsear JSON
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configuración de AWS S3
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY,
   region: process.env.AWS_REGION
 });
 
-// Configura rutas
+// Servir archivos estáticos
 app.use(express.static('views'));
+
+// Rutas de la API
+app.use('/api/users', userRoutes);
 app.post('/upload', upload.single('photo'), uploadPhoto);
 app.get('/photos', listPhotos);
 
+// Funciones para manejar fotos
 async function uploadPhoto(req, res) {
   const params = {
     Bucket: process.env.S3_BUCKET,
@@ -49,17 +59,12 @@ async function listPhotos(req, res) {
   }
 }
 
-// Configura HTTPS
-const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem')
-};
-
-// Configura rutas
-app.get('/', (req, res) => {
-  res.send('¡Hola, mundo seguro!');
-});
-
-
+// Sincronizar base de datos y iniciar servidor
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+sequelize.sync()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+  })
+  .catch(err => {
+    console.error('Error al sincronizar la base de datos:', err);
+  });
