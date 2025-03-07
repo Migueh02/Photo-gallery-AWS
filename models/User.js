@@ -19,6 +19,10 @@ const User = sequelize.define('User', {
             isEmail: true
         }
     },
+    imagen: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     fechaRegistro: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW

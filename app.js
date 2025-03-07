@@ -61,8 +61,9 @@ async function listPhotos(req, res) {
 
 // Sincronizar base de datos y iniciar servidor
 const PORT = process.env.PORT || 3000;
-sequelize.sync()
+sequelize.sync({ force: true })
   .then(() => {
+    console.log('Base de datos sincronizada');
     app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
   })
   .catch(err => {

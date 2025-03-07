@@ -20,9 +20,19 @@
         
         <div class="user-form">
             <h2>Agregar Usuario</h2>
-            <form id="userForm">
-                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-                <input type="email" id="email" name="email" placeholder="Email" required>
+            <form id="userForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="imagen" class="file-label">
+                        <span id="imagenLabel">Seleccionar imagen de perfil</span>
+                        <input type="file" id="imagen" name="imagen" accept="image/*" class="file-input">
+                    </label>
+                </div>
                 <button type="submit">Agregar Usuario</button>
             </form>
         </div>
@@ -30,6 +40,7 @@
         <table class="users-table">
             <thead>
                 <tr>
+                    <th>Imagen</th>
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Email</th>
@@ -53,6 +64,11 @@
                 users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
+                        <td>
+                            ${user.imagen 
+                                ? `<img src="${user.imagen}" alt="Foto de ${user.nombre}" class="user-avatar">` 
+                                : '<div class="user-avatar-placeholder">Sin foto</div>'}
+                        </td>
                         <td>${user.id}</td>
                         <td>${user.nombre}</td>
                         <td>${user.email}</td>
@@ -69,22 +85,24 @@
         document.getElementById('userForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const formData = {
-                nombre: document.getElementById('nombre').value,
-                email: document.getElementById('email').value
-            };
+            const formData = new FormData();
+            formData.append('nombre', document.getElementById('nombre').value);
+            formData.append('email', document.getElementById('email').value);
+            
+            const imagenInput = document.getElementById('imagen');
+            if (imagenInput.files.length > 0) {
+                formData.append('imagen', imagenInput.files[0]);
+            }
 
             try {
                 const response = await fetch('/api/users', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+                    body: formData
                 });
 
                 if (response.ok) {
                     document.getElementById('userForm').reset();
+                    document.getElementById('imagenLabel').textContent = 'Seleccionar imagen de perfil';
                     loadUsers();
                 } else {
                     const error = await response.json();
@@ -94,6 +112,12 @@
                 console.error('Error al crear usuario:', error);
                 alert('Error al crear usuario');
             }
+        });
+
+        // Manejar la selección de archivo
+        document.getElementById('imagen').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Seleccionar imagen de perfil';
+            document.getElementById('imagenLabel').textContent = fileName;
         });
 
         // Tema oscuro
